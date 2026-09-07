@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Noocap</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0b0e14;
+    --rail: #12161f;
+    --raised: #1b2130;
+    --line: #1e2431;
+    --line-2: #262d3b;
+    --text: #e7eaf0;
+    --dim: #9aa3b4;
+    --faint: #5d6577;
+    --accent: #8b93f8;
+    --ok: #5bc98f;
+    --warn: #dfa45f;
+    --bad: #e0685f;
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    background: var(--ink);
+    color: var(--text);
+    font: 400 14px/1.5 Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    letter-spacing: -0.005em;
+    -webkit-font-smoothing: antialiased;
+    font-variant-numeric: tabular-nums;
+  }
+  #app { display: flex; height: 100vh; height: 100dvh; }
+
+  #rail {
+    width: 206px; flex: 0 0 206px;
+    background: var(--rail); border-right: 1px solid var(--line);
+    display: flex; flex-direction: column; padding: 14px 12px;
+  }
+  #brand { display: flex; align-items: center; gap: 10px; padding: 2px 6px 18px; }
+  #mark {
+    width: 26px; height: 26px; border-radius: 7px; flex: 0 0 26px;
+    background: var(--accent); color: var(--ink);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 500;
+  }
+  #brand .who { font-size: 13px; font-weight: 500; line-height: 1.25; }
+  #brand .sub { font-size: 11px; color: var(--faint); line-height: 1.25; }
+  .rail-label { font-size: 11px; color: var(--faint); padding: 0 6px 8px; }
+
+  .nav {
+    display: flex; align-items: center; gap: 10px; width: 100%;
+    padding: 9px 10px; margin-bottom: 3px; border: 0; border-radius: 8px;
+    background: none; color: var(--dim); font: inherit; font-size: 13px;
+    text-align: left; cursor: pointer;
+    transition: background .12s ease, color .12s ease;
+  }
+  .nav:hover { background: #171d29; color: var(--text); }
+  .nav[aria-current="page"] { background: var(--raised); color: var(--text); font-weight: 500; }
+  .nav .ico { width: 16px; height: 16px; flex: 0 0 16px; color: currentColor; }
+  .nav[aria-current="page"] .ico { color: var(--accent); }
+  .nav .label { flex: 1; }
+  .nav .tag { font-size: 11px; color: var(--faint); }
+  .nav[aria-current="page"] .tag { color: var(--dim); }
+  .nav .pill {
+    font-size: 11px; line-height: 1.6; padding: 0 7px; border-radius: 20px;
+    background: var(--accent); color: var(--ink); font-weight: 500;
+  }
+
+  #foot { margin-top: auto; padding-top: 12px; border-top: 1px solid var(--line); }
+  #health { display: flex; align-items: center; gap: 8px; padding: 6px; width: 100%;
+    background: none; border: 0; font: inherit; color: var(--dim); font-size: 12px; cursor: pointer; border-radius: 6px; }
+  #health:hover { background: #171d29; }
+  #health .label { flex: 1; text-align: left; }
+  #health .count { font-size: 11px; color: var(--faint); }
+  #synced { font-size: 11px; color: var(--faint); padding: 2px 6px 0; }
+
+  #main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+  #bar { display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 12px 16px; border-bottom: 1px solid var(--line); }
+  #title { font-size: 15px; font-weight: 500; margin: 0; line-height: 1.3; }
+  #host { font-size: 11px; color: var(--faint); }
+  .act { background: none; border: 1px solid var(--line-2); color: var(--dim);
+    border-radius: 8px; padding: 6px 11px; font: inherit; font-size: 12px; cursor: pointer;
+    transition: color .12s ease, border-color .12s ease; }
+  .act:hover { color: var(--text); border-color: #333c4d; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  #stage { flex: 1; position: relative; min-height: 0; }
+  #stage iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  #stage [hidden] { display: none; }
+  .blank { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    padding: 24px; text-align: center; color: var(--faint); font-size: 13px; line-height: 1.8; }
+
+  #strip { border-top: 1px solid var(--line); padding: 9px 16px;
+    display: flex; align-items: center; gap: 20px; flex-wrap: wrap; min-height: 40px; font-size: 12px; }
+  #wf-body { display: flex; gap: 20px; flex-wrap: wrap; align-items: center; color: var(--faint); }
+  .wf { display: flex; align-items: center; gap: 7px; white-space: nowrap; color: var(--dim); }
+  .wf .meta { color: var(--faint); }
+  .pip { width: 7px; height: 7px; border-radius: 50%; flex: 0 0 7px; background: #39414f; }
+  .pip.ok { background: var(--ok); }
+  .pip.running { background: var(--accent); }
+  .pip.error { background: var(--bad); }
+
+  @media (max-width: 780px) {
+    #app { flex-direction: column; }
+    #rail { width: auto; flex: 0 0 auto; flex-direction: row; align-items: center; gap: 4px;
+      border-right: 0; border-bottom: 1px solid var(--line); overflow-x: auto; padding: 9px 10px; }
+    #brand { padding: 0 12px 0 4px; }
+    .rail-label, #foot, #host { display: none; }
+    .nav { width: auto; margin: 0; white-space: nowrap; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<div id="app">
+  <nav id="rail" aria-label="Dashboards">
+    <div id="brand">
+      <span id="mark">N</span>
+      <span>
+        <span class="who">Noocap Media</span><br>
+        <span class="sub">Internal</span>
+      </span>
+    </div>
+    <div class="rail-label">Dashboards</div>
+  </nav>
+
+  <div id="main">
+    <header id="bar">
+      <div style="min-width:0">
+        <h1 id="title">Pipeline</h1>
+        <div id="host"></div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="act" id="reload" type="button">Reload</button>
+        <button class="act" id="popout" type="button">Open in tab</button>
+      </div>
+    </header>
+
+    <div id="stage"></div>
+
+    <footer id="strip" aria-live="polite">
+      <span id="wf-body">Checking workflows…</span>
+    </footer>
+  </div>
+</div>
+
+<script>
+const VIEWS = [
+  { key: 'pipeline', label: 'Pipeline', url: 'https://noocap-v2.vercel.app', icon: 'kanban' },
+  { key: 'calendar', label: 'Calendar', url: 'https://video-calendar-phi.vercel.app', icon: 'calendar' },
+  { key: 'revenue',  label: 'Revenue',  url: 'https://revenue-dashboard-sand.vercel.app', icon: 'chart' }
+];
+
+const ICONS = {
+  kanban: '<rect x="3" y="3" width="5.5" height="18" rx="1.5"/><rect x="10.5" y="3" width="5.5" height="12" rx="1.5"/><rect x="18" y="3" width="3" height="8" rx="1.5"/>',
+  calendar: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+  chart: '<path d="M4 19V5M4 19h16"/><path d="M8 15l4-5 3 3 4-6"/>'
+};
+
+const rail = document.getElementById('rail');
+const stage = document.getElementById('stage');
+const titleEl = document.getElementById('title');
+const hostEl = document.getElementById('host');
+let active = null;
+
+function icon(name) {
+  return '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" ' +
+    'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + ICONS[name] + '</svg>';
+}
+
+VIEWS.forEach(v => {
+  const b = document.createElement('button');
+  b.className = 'nav';
+  b.type = 'button';
+  b.dataset.key = v.key;
+  b.innerHTML = icon(v.icon) + '<span class="label">' + v.label + '</span><span class="tag" id="tag-' + v.key + '"></span>';
+  b.addEventListener('click', () => show(v.key));
+  rail.appendChild(b);
+
+  const live = v.url.startsWith('http');
+  const el = document.createElement(live ? 'iframe' : 'div');
+  el.id = 'f-' + v.key;
+  el.hidden = true;
+  if (live) { el.title = v.label; el.dataset.loaded = ''; }
+  else { el.className = 'blank'; el.textContent = 'Add the ' + v.label.toLowerCase() + ' deploy URL to the VIEWS list at the top of index.html.'; }
+  stage.appendChild(el);
+});
+
+const foot = document.createElement('div');
+foot.id = 'foot';
+foot.innerHTML =
+  '<button id="health" type="button"><span class="pip" id="health-pip"></span>' +
+  '<span class="label">Workflows</span><span class="count" id="health-count">—</span></button>' +
+  '<div id="synced"></div>';
+rail.appendChild(foot);
+
+function show(key) {
+  const v = VIEWS.find(x => x.key === key);
+  if (!v) return;
+  active = v;
+  rail.querySelectorAll('.nav').forEach(n => {
+    if (n.dataset.key === key) n.setAttribute('aria-current', 'page');
+    else n.removeAttribute('aria-current');
+  });
+  VIEWS.forEach(x => {
+    const el = document.getElementById('f-' + x.key);
+    if (el) el.hidden = x.key !== key;
+  });
+  const frame = document.getElementById('f-' + key);
+  if (frame && frame.tagName === 'IFRAME' && !frame.dataset.loaded) {
+    frame.src = v.url;
+    frame.dataset.loaded = '1';
+  }
+  titleEl.textContent = v.label;
+  hostEl.textContent = v.url.startsWith('http') ? v.url.replace(/^https?:\/\//, '') : '';
+  try { history.replaceState(null, '', '#' + key); } catch (e) {}
+}
+
+document.getElementById('reload').addEventListener('click', () => {
+  const frame = document.getElementById('f-' + active.key);
+  if (frame && frame.tagName === 'IFRAME') frame.src = active.url;
+  loadCounts();
+  loadWorkflows();
+});
+document.getElementById('popout').addEventListener('click', () => {
+  if (active.url.startsWith('http')) window.open(active.url, '_blank', 'noopener');
+});
+document.getElementById('health').addEventListener('click', () => {
+  document.getElementById('strip').scrollIntoView({ block: 'nearest' });
+  loadWorkflows();
+});
+
+function ago(iso) {
+  if (!iso) return 'no runs yet';
+  const mins = Math.round((Date.now() - new Date(iso)) / 60000);
+  if (mins < 1) return 'just now';
+  if (mins < 60) return mins + 'm ago';
+  const hrs = Math.round(mins / 60);
+  if (hrs < 24) return hrs + 'h ago';
+  return Math.round(hrs / 24) + 'd ago';
+}
+
+function esc(s) {
+  return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+}
+
+async function loadCounts() {
+  try {
+    const d = await (await fetch('/api/counts')).json();
+    const p = document.getElementById('tag-pipeline');
+    const c = document.getElementById('tag-calendar');
+    if (d.changes) { p.className = 'pill'; p.textContent = d.changes; }
+    else { p.className = 'tag'; p.textContent = ''; }
+    c.className = 'tag';
+    c.textContent = d.dueToday ? d.dueToday + ' due' : '';
+  } catch (e) {}
+}
+
+async function loadWorkflows() {
+  const body = document.getElementById('wf-body');
+  const pip = document.getElementById('health-pip');
+  const count = document.getElementById('health-count');
+  try {
+    const d = await (await fetch('/api/workflows')).json();
+    if (d.error) throw new Error(d.error);
+    const all = d.workflows || [];
+    if (!all.length) { body.textContent = 'No active workflows'; return; }
+    body.innerHTML = all.slice(0, 6).map(w =>
+      '<span class="wf"><span class="pip ' + w.state + '"></span>' + esc(w.name) +
+      '<span class="meta">' + (w.state === 'error' ? 'last run failed' : w.runsToday + ' today') +
+      ' · ' + ago(w.lastRunAt) + '</span></span>'
+    ).join('');
+    const bad = all.filter(w => w.state === 'error').length;
+    pip.className = 'pip ' + (bad ? 'error' : 'ok');
+    count.textContent = (all.length - bad) + ' of ' + all.length;
+    document.getElementById('synced').textContent = 'Checked ' + ago(d.checkedAt);
+  } catch (e) {
+    body.textContent = 'Workflow status unavailable — ' + e.message;
+    pip.className = 'pip error';
+    count.textContent = '—';
+  }
+}
+
+const start = (location.hash || '').replace('#', '');
+show(VIEWS.some(v => v.key === start) ? start : 'pipeline');
+loadWorkflows();
+loadCounts();
+setInterval(loadWorkflows, 60000);
+setInterval(loadCounts, 60000);
+</script>
+</body>
+</html>
