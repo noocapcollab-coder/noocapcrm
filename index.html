@@ -152,6 +152,7 @@
 <script>
 const VIEWS = [
   { key: 'pipeline', label: 'Pipeline', url: 'https://noocap-v2.vercel.app', icon: 'kanban' },
+  { key: 'scripts',  label: 'Scripts',  url: 'https://scriptwriter-calendar.vercel.app', icon: 'script' },
   { key: 'calendar', label: 'Calendar', url: 'https://video-calendar-phi.vercel.app', icon: 'calendar' },
   { key: 'revenue',  label: 'Revenue',  url: 'https://revenue-dashboard-sand.vercel.app', icon: 'chart' }
 ];
@@ -159,7 +160,8 @@ const VIEWS = [
 const ICONS = {
   kanban: '<rect x="3" y="3" width="5.5" height="18" rx="1.5"/><rect x="10.5" y="3" width="5.5" height="12" rx="1.5"/><rect x="18" y="3" width="3" height="8" rx="1.5"/>',
   calendar: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
-  chart: '<path d="M4 19V5M4 19h16"/><path d="M8 15l4-5 3 3 4-6"/>'
+  chart: '<path d="M4 19V5M4 19h16"/><path d="M8 15l4-5 3 3 4-6"/>',
+  script: '<path d="M4 4.5A1.5 1.5 0 0 1 5.5 3H14l5 5v12.5a1.5 1.5 0 0 1-1.5 1.5h-12A1.5 1.5 0 0 1 4 20.5Z"/><path d="M14 3v5h5"/><path d="M8.5 13h7M8.5 17h4.5"/>'
 };
 
 const rail = document.getElementById('rail');
