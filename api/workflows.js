@@ -1,3 +1,7 @@
+// api/workflows.js — reads workflow health from the n8n REST API.
+//
+// Env vars in Vercel: N8N_BASE_URL, N8N_API_KEY (read-only scope is enough).
+
 const TZ = 'Asia/Kolkata';
 
 function dayKey(iso) {
