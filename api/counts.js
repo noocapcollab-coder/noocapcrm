@@ -1,3 +1,7 @@
+// api/counts.js — derives the sidebar badge numbers from the pipeline dashboard.
+//
+// Env var (optional): PIPELINE_URL, default https://noocap-v2.vercel.app
+
 const PIPELINE = process.env.PIPELINE_URL || 'https://noocap-v2.vercel.app';
 const TZ = 'Asia/Kolkata';
 
