@@ -151,7 +151,6 @@
 
 <script>
 const VIEWS = [
-  { key: 'pipeline',  label: 'Pipeline',   url: 'https://noocap-v2.vercel.app',            icon: 'kanban' },
   { key: 'scripting', label: 'Scripting',  url: 'https://scriptwriter-calendar.vercel.app', icon: 'pen' },
   { key: 'calendar',  label: 'Calendar',   url: 'https://video-calendar-phi.vercel.app',   icon: 'calendar' },
   { key: 'contentos', label: 'Content OS', url: 'https://contentos-dusky.vercel.app/?team=Nooc%40pmedia123', resolve: 'contentos', icon: 'pulse' }
@@ -320,7 +319,7 @@ async function loadWorkflows() {
 }
 
 const start = (location.hash || '').replace('#', '');
-show(VIEWS.some(v => v.key === start) ? start : 'pipeline');
+show(VIEWS.some(v => v.key === start) ? start : VIEWS[0].key);
 loadLinks();
 loadWorkflows();
 loadCounts();
