@@ -286,8 +286,8 @@ async function loadCounts() {
     const d = await (await fetch('/api/counts')).json();
     const p = document.getElementById('tag-pipeline');
     const c = document.getElementById('tag-calendar');
-    if (d.changes) { p.className = 'pill'; p.textContent = d.changes; }
-    else { p.className = 'tag'; p.textContent = ''; }
+    if (p) { if (d.changes) { p.className = 'pill'; p.textContent = d.changes; } else { p.className = 'tag'; p.textContent = ''; } }
+    if (!c) return;
     c.className = 'tag';
     c.textContent = d.dueToday ? d.dueToday + ' due' : '';
   } catch (e) {}
